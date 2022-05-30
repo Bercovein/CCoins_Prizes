@@ -1,14 +1,14 @@
 package com.ccoins.Prizes.exceptions.controllerAdvice;
 
-import com.ccoins.Bars.exceptions.*;
-import com.ccoins.Bars.exceptions.ObjectNoContentException;
+
+import com.ccoins.Prizes.exceptions.*;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import static com.ccoins.Bars.exceptions.utils.ErrorUtils.buildMessage;
+import static com.ccoins.Prizes.exceptions.utils.ErrorUtils.buildMessage;
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.ResponseEntity.status;

@@ -1,6 +1,7 @@
 package com.ccoins.Prizes.exceptions.utils;
 
-import com.ccoins.Bars.exceptions.dto.ExceptionRsDTO;
+
+import com.ccoins.Prizes.exceptions.dto.ExceptionRsDTO;
 
 public class ErrorUtils {
 
