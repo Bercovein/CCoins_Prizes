@@ -49,7 +49,7 @@ public class PrizeService implements IPrizeService {
 
             if(barsOpt.isPresent()){
                 List<Prize> bars = barsOpt.get();
-                response.setList((List<PrizeDTO>)MapperUtils.map(bars, PrizeDTO.class));
+                response.setList(MapperUtils.mapList(bars, PrizeDTO.class));
             }
 
             return ResponseEntity.ok(response);

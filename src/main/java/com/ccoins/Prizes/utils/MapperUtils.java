@@ -12,7 +12,7 @@ public class MapperUtils {
         return mapper.map(obj,cla);
     }
 
-    public static List<Object> map(List<Object> list, Class<?> cla){
+    public static List<Object> mapList(List list, Class<?> cla){
 
         List<Object> responseList = new ArrayList<>();
         list.forEach(o -> responseList.add(MapperUtils.map(o,cla)));
