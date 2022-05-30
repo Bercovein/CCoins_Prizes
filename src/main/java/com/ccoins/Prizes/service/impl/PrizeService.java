@@ -4,7 +4,6 @@ import com.ccoins.Prizes.dto.ListDTO;
 import com.ccoins.Prizes.dto.PrizeDTO;
 import com.ccoins.Prizes.exceptions.UnauthorizedException;
 import com.ccoins.Prizes.exceptions.constant.ExceptionConstant;
-import com.ccoins.Prizes.exceptions.utils.ErrorUtils;
 import com.ccoins.Prizes.model.Prize;
 import com.ccoins.Prizes.repository.IPrizeRepository;
 import com.ccoins.Prizes.service.IPrizeService;
@@ -36,7 +35,6 @@ public class PrizeService implements IPrizeService {
             Prize prize = this.repository.save((Prize)MapperUtils.map(request,Prize.class));
             return ResponseEntity.ok((PrizeDTO) MapperUtils.map(prize,PrizeDTO.class));
         }catch(Exception e){
-            log.error(ErrorUtils.parseMethodError(this.getClass()));
             throw new UnauthorizedException(ExceptionConstant.PRIZE_CREATE_OR_UPDATE_ERROR_CODE, this.getClass(), ExceptionConstant.PRIZE_CREATE_OR_UPDATE_ERROR);
         }
     }
@@ -56,7 +54,6 @@ public class PrizeService implements IPrizeService {
 
             return ResponseEntity.ok(response);
         }catch(Exception e){
-            log.error(ErrorUtils.parseMethodError(this.getClass()));
             throw new UnauthorizedException(ExceptionConstant.PRIZE_FIND_BY_BAR_ERROR_CODE,
                     this.getClass(),
                     ExceptionConstant.PRIZE_FIND_BY_BAR_ERROR);
@@ -70,7 +67,6 @@ public class PrizeService implements IPrizeService {
             Optional<Prize> bar = this.repository.findById(id);
             return ResponseEntity.ok((PrizeDTO)MapperUtils.map(bar,PrizeDTO.class));
         }catch(Exception e){
-            log.error(ErrorUtils.parseMethodError(this.getClass()));
             throw new UnauthorizedException(ExceptionConstant.PRIZE_FIND_BY_ID_ERROR_CODE,
                     this.getClass(), ExceptionConstant.PRIZE_FIND_BY_ID_ERROR);
         }
@@ -82,7 +78,6 @@ public class PrizeService implements IPrizeService {
         try {
             this.repository.updateActive(id);
         }catch(Exception e){
-            log.error(ErrorUtils.parseMethodError(this.getClass()));
             throw new UnauthorizedException(ExceptionConstant.PRIZE_UPDATE_ACTIVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.PRIZE_UPDATE_ACTIVE_ERROR);
         }
