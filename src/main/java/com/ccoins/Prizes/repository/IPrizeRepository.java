@@ -18,6 +18,6 @@ public interface IPrizeRepository extends JpaRepository<Prize, Long> {
     Optional<List<Prize>> findByBar(Long id);
 
     @Modifying
-    @Query("UPDATE Bar set active = IF(active IS TRUE, FALSE, TRUE) where id = :id")
+    @Query("UPDATE Prize set active = IF(active IS TRUE, FALSE, TRUE) where id = :id")
     int updateActive(@Param("id") Long id);
 }
