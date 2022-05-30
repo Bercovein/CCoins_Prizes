@@ -1,4 +1,4 @@
-package com.ccoins.Prizes.model;
+package com.ccoins.Prizes.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,24 +12,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name="PARTIES")
-public class Party {
+public class PartyDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
     private Long id;
 
-    @Column(name="name")
     private String name;
 
-    @Column(name="start_date")
     private LocalDateTime startDate;
 
-    @Column(name="active", columnDefinition = "boolean default true")
     private boolean active;
 
-    @Column(name="fk_table")
     private Long table;
 }
