@@ -37,5 +37,13 @@ public class ExceptionConstant {
     public static final String PRIZE_UPDATE_ACTIVE_ERROR_CODE = "0008";
     public static final String PRIZE_UPDATE_ACTIVE_ERROR = ACTIVE_UNACTIVE_ERROR_LABEL.concat("prize");
 
+    public static final String PRIZE_UPDATE_LIST_ERROR_CODE = "0009";
+    public static final String PRIZE_UPDATE_LIST_ERROR = ACTIVE_UNACTIVE_ERROR_LABEL.concat("prize by list");
+
+
+
+    public static final String PRIZE_FIND_LIST_ERROR_CODE = "0010";
+    public static final String PRIZE_FIND_LIST_ERROR = GET_ERROR_LABEL.concat("prize by list");
+
 
 }

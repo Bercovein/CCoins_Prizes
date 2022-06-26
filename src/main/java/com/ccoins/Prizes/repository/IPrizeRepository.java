@@ -2,6 +2,7 @@ package com.ccoins.Prizes.repository;
 
 
 import com.ccoins.Prizes.model.Prize;
+import com.ccoins.Prizes.model.projection.IPPrize;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,10 +17,20 @@ import java.util.Optional;
 @Repository
 public interface IPrizeRepository extends JpaRepository<Prize, Long> {
 
-    Optional<List<Prize>> findByBar(Long id);
+    Optional<List<IPPrize>> findByBar(Long id);
+
+    Optional<List<IPPrize>> findByBarAndActive(Long bar, boolean state);
+
 
     @Transactional
     @Modifying
     @Query(value = "UPDATE Prizes set active = IF(active IS TRUE, FALSE, TRUE) where id = :id", nativeQuery = true)
     int updateActive(@Param("id") Long id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Prizes set active = IF(active IS TRUE, FALSE, TRUE) where id in (:list)",nativeQuery = true)
+    int updateActiveList(@Param("list") List<Long> list);
+
+    Optional<List<Prize>> findByIdIn(List<Long> list);
 }
