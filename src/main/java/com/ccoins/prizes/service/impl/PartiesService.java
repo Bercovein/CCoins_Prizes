@@ -28,7 +28,7 @@ public class PartiesService implements IPartiesService {
 
     @Override
     public Optional<IPParty> findActivePartyByTable(Long id) {
-        return this.repository.findByTable(id);
+        return this.repository.findByTableAndActive(id,true);
     }
 
     @Override

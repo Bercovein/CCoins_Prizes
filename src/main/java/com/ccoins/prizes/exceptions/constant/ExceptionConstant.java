@@ -53,4 +53,8 @@ public class ExceptionConstant {
     public static final String PARTY_CREATE_ERROR = CREATE_NEW_ERROR_LABEL.concat("party");
 
 
+    public static final String RANDOM_NAME_ERROR_CODE = "0013";
+    public static final String RANDOM_NAME_ERROR = CREATE_NEW_ERROR_LABEL.concat("random name");
+
+
 }

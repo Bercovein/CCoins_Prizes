@@ -11,6 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface IPartyRepository extends JpaRepository<Party, Long> {
-
-    Optional<IPParty> findByTable(Long id);
+    Optional<IPParty> findByTableAndActive(Long id, boolean b);
 }
