@@ -36,9 +36,4 @@ public class PartiesController {
         return this.service.createByTable(id);
     }
 
-    @GetMapping("")
-    String randomName(){
-        return this.random.randomName();
-    }
-
 }
