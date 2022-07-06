@@ -5,10 +5,7 @@ import com.ccoins.prizes.model.projection.IPParty;
 import com.ccoins.prizes.service.IPartiesService;
 import com.ccoins.prizes.service.IRandomNameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -27,12 +24,12 @@ public class PartiesController {
     }
 
     @GetMapping("/table/{id}")
-    Optional<IPParty> findActivePartyByTable(Long id){
+    Optional<IPParty> findActivePartyByTable(@PathVariable("id") Long id){
         return this.service.findActivePartyByTable(id);
     }
 
-    @PostMapping("")
-    PartyDTO createParty(Long id){
+    @PostMapping("/table/{id}")
+    PartyDTO createParty(@PathVariable("id")Long id){
         return this.service.createByTable(id);
     }
 
