@@ -3,8 +3,8 @@ package com.ccoins.prizes.controller;
 import com.ccoins.prizes.dto.PartyDTO;
 import com.ccoins.prizes.model.projection.IPParty;
 import com.ccoins.prizes.service.IPartiesService;
-import com.ccoins.prizes.service.IRandomNameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -15,12 +15,9 @@ public class PartiesController {
 
     private final IPartiesService service;
 
-    private final IRandomNameService  random;
-
     @Autowired
-    public PartiesController(IPartiesService service, IRandomNameService random) {
+    public PartiesController(IPartiesService service) {
         this.service = service;
-        this.random = random;
     }
 
     @GetMapping("/table/{id}")
@@ -33,4 +30,9 @@ public class PartiesController {
         return this.service.createByTable(id);
     }
 
+    @PostMapping({"/{partyId}/client/{clientId}"})
+    @ResponseStatus(HttpStatus.OK)
+    void addClientToParty(@PathVariable("partyId") Long partyId, @PathVariable("clientId") Long clientId) {
+        this.service.addClientToParty(partyId,clientId);
+    }
 }

@@ -3,8 +3,10 @@ package com.ccoins.prizes.service.impl;
 import com.ccoins.prizes.dto.PartyDTO;
 import com.ccoins.prizes.exceptions.BadRequestException;
 import com.ccoins.prizes.exceptions.constant.ExceptionConstant;
+import com.ccoins.prizes.model.ClientParty;
 import com.ccoins.prizes.model.Party;
 import com.ccoins.prizes.model.projection.IPParty;
+import com.ccoins.prizes.repository.IClientPartyRepository;
 import com.ccoins.prizes.repository.IPartyRepository;
 import com.ccoins.prizes.service.IPartiesService;
 import com.ccoins.prizes.service.IRandomNameService;
@@ -22,11 +24,14 @@ public class PartiesService implements IPartiesService {
 
     private final IPartyRepository repository;
 
+    private final IClientPartyRepository clientPartyRepository;
+
     private final IRandomNameService randomizer;
 
     @Autowired
-    public PartiesService(IPartyRepository repository, IRandomNameService randomizer) {
+    public PartiesService(IPartyRepository repository, IClientPartyRepository clientPartyRepository, IRandomNameService randomizer) {
         this.repository = repository;
+        this.clientPartyRepository = clientPartyRepository;
         this.randomizer = randomizer;
     }
 
@@ -58,5 +63,16 @@ public class PartiesService implements IPartiesService {
 
         return response;
 
+    }
+
+    @Override
+    public void addClientToParty(Long partyId, Long clientId) {
+
+        try{
+            this.clientPartyRepository.save(ClientParty.builder().client(clientId).party(partyId).build());
+        }catch (Exception e) {
+            throw new BadRequestException(ExceptionConstant.CLIENT_PARTY_SAVE_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.CLIENT_PARTY_SAVE_ERROR);
+        }
     }
 }

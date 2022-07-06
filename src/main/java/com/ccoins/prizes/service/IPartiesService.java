@@ -10,4 +10,6 @@ public interface IPartiesService {
     Optional<IPParty> findActivePartyByTable(Long id);
 
     PartyDTO createByTable(Long id);
+
+    void addClientToParty(Long partyId, Long clientId);
 }
