@@ -5,13 +5,13 @@ import java.time.LocalDateTime;
 public interface IPParty {
 
     Long getId();
-    Long getName();
+    String getName();
     boolean getActive();
     LocalDateTime getStartDate();
     Long getTable();
 
     Long setId();
-    Long setName();
+    String setName();
     boolean setActive();
     LocalDateTime setStartDate();
     Long setTable();
