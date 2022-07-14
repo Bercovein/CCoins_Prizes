@@ -9,7 +9,7 @@ public interface IPartiesService {
 
     Optional<IPParty> findActivePartyByTable(Long id);
 
-    PartyDTO createByTable(Long id);
+    PartyDTO createByTable(PartyDTO partyDTO);
 
     void addClientToParty(Long partyId, Long clientId);
 }

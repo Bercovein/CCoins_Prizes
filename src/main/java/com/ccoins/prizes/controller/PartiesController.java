@@ -25,9 +25,9 @@ public class PartiesController {
         return this.service.findActivePartyByTable(id);
     }
 
-    @PostMapping("/table/{id}")
-    PartyDTO createParty(@PathVariable("id")Long id){
-        return this.service.createByTable(id);
+    @PostMapping("/table")
+    PartyDTO createParty(@RequestBody PartyDTO partyDTO){
+        return this.service.createByTable(partyDTO);
     }
 
     @PostMapping({"/{partyId}/client/{clientId}"})

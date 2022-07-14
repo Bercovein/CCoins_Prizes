@@ -15,6 +15,7 @@ import javax.persistence.*;
 @Table(name="CLIENTS_PARTIES")
 public class ClientParty {
 
+    @Id
     @Column(name="FK_CLIENT")
     private Long client;
 

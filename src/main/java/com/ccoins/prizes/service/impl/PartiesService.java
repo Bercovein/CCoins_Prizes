@@ -9,7 +9,6 @@ import com.ccoins.prizes.model.projection.IPParty;
 import com.ccoins.prizes.repository.IClientPartyRepository;
 import com.ccoins.prizes.repository.IPartyRepository;
 import com.ccoins.prizes.service.IPartiesService;
-import com.ccoins.prizes.service.IRandomNameService;
 import com.ccoins.prizes.utils.MapperUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +25,10 @@ public class PartiesService implements IPartiesService {
 
     private final IClientPartyRepository clientPartyRepository;
 
-    private final IRandomNameService randomizer;
-
     @Autowired
-    public PartiesService(IPartyRepository repository, IClientPartyRepository clientPartyRepository, IRandomNameService randomizer) {
+    public PartiesService(IPartyRepository repository, IClientPartyRepository clientPartyRepository) {
         this.repository = repository;
         this.clientPartyRepository = clientPartyRepository;
-        this.randomizer = randomizer;
     }
 
     @Override
@@ -41,15 +37,15 @@ public class PartiesService implements IPartiesService {
     }
 
     @Override
-    public PartyDTO createByTable(Long id) {
+    public PartyDTO createByTable(PartyDTO partyDTO) {
 
         PartyDTO response;
 
         try {
             Party party = Party.builder()
                     .active(true)
-                    .table(id)
-                    .name(this.randomizer.randomName())
+                    .table(partyDTO.getTable())
+                    .name(partyDTO.getName())
                     .startDate(LocalDateTime.now())
                     .build();
 

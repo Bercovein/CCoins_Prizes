@@ -13,6 +13,4 @@ public enum StateEnum {
     String value;
     boolean status;
 
-
-
 }
