@@ -24,12 +24,12 @@ public interface IPrizeRepository extends JpaRepository<Prize, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Prizes set active = IF(active IS TRUE, FALSE, TRUE) where id = :id", nativeQuery = true)
+    @Query(value = "UPDATE prizes set active = IF(active IS TRUE, FALSE, TRUE) where id = :id", nativeQuery = true)
     int updateActive(@Param("id") Long id);
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE Prizes set active = IF(active IS TRUE, FALSE, TRUE) where id in (:list)",nativeQuery = true)
+    @Query(value = "UPDATE prizes set active = IF(active IS TRUE, FALSE, TRUE) where id in (:list)",nativeQuery = true)
     int updateActiveList(@Param("list") List<Long> list);
 
     Optional<List<Prize>> findByIdIn(List<Long> list);

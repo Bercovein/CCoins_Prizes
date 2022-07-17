@@ -19,5 +19,5 @@ public class PrizeDTO {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private boolean active;
-
+    private Long bar;
 }
