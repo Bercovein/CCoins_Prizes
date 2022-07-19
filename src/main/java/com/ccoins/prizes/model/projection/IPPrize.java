@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 public interface IPPrize {
 
     Long getId();
-    Long getName();
+    String getName();
     boolean getActive();
     String getPoints();
     LocalDateTime getStartDate();
     LocalDateTime getEndDate();
 
     Long setId();
-    Long setName();
+    String setName();
     boolean setActive();
     String setPoints();
     LocalDateTime setStartDate();
