@@ -12,4 +12,6 @@ public interface IPartiesService {
     PartyDTO createByTable(PartyDTO partyDTO);
 
     void addClientToParty(Long partyId, Long clientId);
+
+    Optional<PartyDTO> findById(Long id);
 }

@@ -2,6 +2,7 @@ package com.ccoins.prizes.service.impl;
 
 import com.ccoins.prizes.dto.PartyDTO;
 import com.ccoins.prizes.exceptions.BadRequestException;
+import com.ccoins.prizes.exceptions.ObjectNotFoundException;
 import com.ccoins.prizes.exceptions.constant.ExceptionConstant;
 import com.ccoins.prizes.model.ClientParty;
 import com.ccoins.prizes.model.Party;
@@ -69,6 +70,24 @@ public class PartiesService implements IPartiesService {
         }catch (Exception e) {
             throw new BadRequestException(ExceptionConstant.CLIENT_PARTY_SAVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.CLIENT_PARTY_SAVE_ERROR);
+        }
+    }
+
+    @Override
+    public Optional<PartyDTO> findById(Long id){
+
+        PartyDTO response = null;
+
+        try{
+            Optional<Party> partyOpt = this.repository.findById(id);
+
+            if(partyOpt.isPresent()){
+                response = (PartyDTO) MapperUtils.map(partyOpt.get(),PartyDTO.class);
+            }
+            return Optional.ofNullable(response);
+        }catch (Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.PARTY_FIND_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.PARTY_FIND_ERROR);
         }
     }
 }

@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface IPartyRepository extends JpaRepository<Party, Long> {
     Optional<IPParty> findByTableAndActive(Long id, boolean b);
-
+    Optional<Party> findById(Long id);
     Party save(Party party);
 }

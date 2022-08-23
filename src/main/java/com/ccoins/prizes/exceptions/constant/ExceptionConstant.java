@@ -59,5 +59,4 @@ public class ExceptionConstant {
     public static final String CLIENT_PARTY_SAVE_ERROR_CODE = "0014";
     public static final String CLIENT_PARTY_SAVE_ERROR = ADDING_ERROR_LABEL.concat("client to party");
 
-
 }

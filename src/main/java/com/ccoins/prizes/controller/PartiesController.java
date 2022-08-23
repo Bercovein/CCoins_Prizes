@@ -35,4 +35,9 @@ public class PartiesController {
     void addClientToParty(@PathVariable("partyId") Long partyId, @PathVariable("clientId") Long clientId) {
         this.service.addClientToParty(partyId,clientId);
     }
+
+    @GetMapping("/{id}")
+    Optional<PartyDTO> findbyId(@PathVariable("id") Long id){
+        return this.service.findById(id);
+    }
 }
