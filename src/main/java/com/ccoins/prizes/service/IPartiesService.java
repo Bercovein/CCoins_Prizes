@@ -3,6 +3,7 @@ package com.ccoins.prizes.service;
 import com.ccoins.prizes.dto.PartyDTO;
 import com.ccoins.prizes.model.projection.IPParty;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IPartiesService {
@@ -14,4 +15,6 @@ public interface IPartiesService {
     void addClientToParty(Long partyId, Long clientId);
 
     Optional<PartyDTO> findById(Long id);
+
+    List<Long> findClientsByPartyId(Long id);
 }

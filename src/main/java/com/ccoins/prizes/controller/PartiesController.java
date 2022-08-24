@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -37,7 +38,12 @@ public class PartiesController {
     }
 
     @GetMapping("/{id}")
-    Optional<PartyDTO> findbyId(@PathVariable("id") Long id){
+    Optional<PartyDTO> findById(@PathVariable("id") Long id){
         return this.service.findById(id);
+    }
+
+    @GetMapping("/{id}/clients")
+    List<Long> findClientsByPartyId(@PathVariable("id") Long id){
+        return this.service.findClientsByPartyId(id);
     }
 }

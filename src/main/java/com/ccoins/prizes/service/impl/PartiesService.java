@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -89,5 +91,23 @@ public class PartiesService implements IPartiesService {
             throw new ObjectNotFoundException(ExceptionConstant.PARTY_FIND_ERROR_CODE,
                     this.getClass(), ExceptionConstant.PARTY_FIND_ERROR);
         }
+    }
+
+    @Override
+    public List<Long> findClientsByPartyId(Long id) {
+
+        List<Long> idList = new ArrayList<>();
+        List<ClientParty> clientPartyList;
+
+        try {
+            clientPartyList = this.clientPartyRepository.findByParty(id);
+        }catch(Exception e){
+            clientPartyList = new ArrayList<>();
+        }
+
+        for (ClientParty cp: clientPartyList) {
+            idList.add(cp.getClient());
+        }
+        return idList;
     }
 }
