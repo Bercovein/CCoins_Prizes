@@ -9,12 +9,14 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ccoins</groupId>
-	<artifactId>Prizes</artifactId>
+	<artifactId>${app.name}</artifactId>
 	<version>1.0.0</version>
 	<name>Prizes</name>
 	<description>Demo project for Spring Boot</description>
+<!--	<packaging>war</packaging>-->
 	<properties>
 		<java.version>11</java.version>
+		<app.name>prizes-app</app.name>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -71,9 +73,17 @@
 			<artifactId>modelmapper</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+
+<!--		&lt;!&ndash; TOMCAT &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--			<scope>provided</scope>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<build>
+		<finalName>${app.name}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
