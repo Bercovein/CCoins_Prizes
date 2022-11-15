@@ -46,4 +46,15 @@ public class PartiesController {
     List<Long> findClientsByPartyId(@PathVariable("id") Long id){
         return this.service.findClientsByPartyId(id);
     }
+
+    @DeleteMapping("/client/{client}")
+    void logoutClientFromTables(String client){
+        this.service.logoutClientFromTables(client);
+    }
+
+    @GetMapping("/table/code/{code}")
+    Optional<PartyDTO> findActivePartyByTableCode(@PathVariable ("code")String code){
+       return this.service.findActivePartyByTableCode(code);
+    }
+
 }

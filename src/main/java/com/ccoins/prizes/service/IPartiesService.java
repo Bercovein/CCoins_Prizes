@@ -17,4 +17,8 @@ public interface IPartiesService {
     Optional<PartyDTO> findById(Long id);
 
     List<Long> findClientsByPartyId(Long id);
+
+    void logoutClientFromTables(String client);
+
+    Optional<PartyDTO> findActivePartyByTableCode(String code);
 }

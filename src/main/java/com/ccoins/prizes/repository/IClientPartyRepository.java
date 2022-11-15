@@ -12,4 +12,6 @@ import java.util.List;
 public interface IClientPartyRepository extends JpaRepository<ClientParty, Long> {
 
     List<ClientParty> findByParty(Long id);
+
+    List<ClientParty> findByClientAndActive(String client, boolean b);
 }

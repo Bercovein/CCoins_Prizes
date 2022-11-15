@@ -110,4 +110,25 @@ public class PartiesService implements IPartiesService {
         }
         return idList;
     }
+
+    @Override
+    public void logoutClientFromTables(String client) {
+        List<ClientParty> tables = this.clientPartyRepository.findByClientAndActive(client, true);
+
+        tables.forEach(table -> {table.setActive(false);
+            this.clientPartyRepository.save(table);
+        });
+    }
+
+    @Override
+    public Optional<PartyDTO> findActivePartyByTableCode(String code) {
+
+        Optional<Party> partyOpt = this.repository.findByTableCode(code);
+        PartyDTO party = null;
+
+        if(partyOpt.isPresent())
+            party = (PartyDTO) MapperUtils.map(partyOpt.get(), PartyDTO.class);
+
+        return Optional.ofNullable(party);
+    }
 }

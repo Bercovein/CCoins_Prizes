@@ -4,6 +4,7 @@ package com.ccoins.prizes.repository;
 import com.ccoins.prizes.model.Party;
 import com.ccoins.prizes.model.projection.IPParty;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -14,4 +15,8 @@ public interface IPartyRepository extends JpaRepository<Party, Long> {
     Optional<IPParty> findByTableAndActive(Long id, boolean b);
     Optional<Party> findById(Long id);
     Party save(Party party);
+
+    @Query("SELECT P.* FROM PARTIES P WHERE T.CODE = :CODE" +
+            " INNER JOIN TABLES T ON P.FK_TABLES = T.ID")
+    Optional<Party> findByTableCode(String code);
 }

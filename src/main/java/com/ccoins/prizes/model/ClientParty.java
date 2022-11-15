@@ -22,4 +22,7 @@ public class ClientParty {
     @Column(name="FK_PARTY")
     private Long party;
 
+    @Column(name = "ACTIVE")
+    private boolean active;
+
 }
