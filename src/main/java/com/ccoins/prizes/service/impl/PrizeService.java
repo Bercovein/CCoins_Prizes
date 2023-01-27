@@ -46,15 +46,15 @@ public class PrizeService implements IPrizeService {
     }
 
     @Override
-    public ResponseEntity<ListDTO> findAllByBarAndOptStatus(Long id, Optional<String> status) {
+    public ResponseEntity<ListDTO> findAllByBarAndOptStatus(Long id, Optional<String> statusOpt) {
 
         ListDTO response = new ListDTO(new ArrayList<>());
         Optional<List<IPPrize>> listOpt;
         try {
 
-            if(status.isPresent()){
-
-                boolean state = StateUtils.isActive(status.get());
+            if(statusOpt.isPresent()){
+                String status = statusOpt.get();
+                boolean state = StateUtils.isActive(status);
 
                 listOpt = this.repository.findByBarAndActive(id, state);
             }else{

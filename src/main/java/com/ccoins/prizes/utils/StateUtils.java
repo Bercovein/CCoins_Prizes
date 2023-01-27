@@ -7,7 +7,7 @@ public class StateUtils {
 
     public static boolean isActive(String status){
         boolean state;
-        if(status.equals(StateEnum.ACTIVE.getValue())){
+        if(StateEnum.ACTIVE.getValue().equals(status)){
             state = StateEnum.ACTIVE.isStatus();
         }else{
             state = StateEnum.UNACTIVE.isStatus();
