@@ -53,7 +53,7 @@ public class PartiesController {
     }
 
     @GetMapping("/table/code/{code}")
-    Optional<PartyDTO> findActivePartyByTableCode(@PathVariable ("code")String code){
+    Optional<PartyDTO> findActivePartyByTableCode(@PathVariable("code") String code){
        return this.service.findActivePartyByTableCode(code);
     }
 

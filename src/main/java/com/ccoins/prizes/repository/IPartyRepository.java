@@ -18,7 +18,8 @@ public interface IPartyRepository extends JpaRepository<Party, Long> {
     Party save(Party party);
 
     @Query(value = "SELECT P.* FROM parties P " +
-            "INNER JOIN bar_tables T ON P.FK_TABLES = T.ID " +
-            "WHERE T.CODE = :code;", nativeQuery = true)
+            "INNER JOIN bar_tables T ON P.FK_TABLE = T.ID " +
+            "WHERE T.CODE = :code " +
+            "AND p.active <> 0", nativeQuery = true)
     Optional<Party> findByTableCode(@Param("code") String code);
 }
