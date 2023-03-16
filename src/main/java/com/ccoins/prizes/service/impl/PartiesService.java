@@ -68,7 +68,7 @@ public class PartiesService implements IPartiesService {
     public void addClientToParty(Long partyId, Long clientId) {
 
         try{
-            this.clientPartyRepository.save(ClientParty.builder().client(clientId).party(partyId).build());
+            this.clientPartyRepository.save(ClientParty.builder().client(clientId).party(partyId).active(true).build());
         }catch (Exception e) {
             throw new BadRequestException(ExceptionConstant.CLIENT_PARTY_SAVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.CLIENT_PARTY_SAVE_ERROR);
