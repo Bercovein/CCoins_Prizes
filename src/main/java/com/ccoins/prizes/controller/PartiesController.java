@@ -1,5 +1,6 @@
 package com.ccoins.prizes.controller;
 
+import com.ccoins.prizes.dto.LongListDTO;
 import com.ccoins.prizes.dto.PartyDTO;
 import com.ccoins.prizes.model.projection.IPParty;
 import com.ccoins.prizes.service.IPartiesService;
@@ -57,4 +58,9 @@ public class PartiesController {
        return this.service.findActivePartyByTableCode(code);
     }
 
+    @PostMapping("/clients")
+    List<Long> findAllIdsByClients(@RequestBody LongListDTO list){
+        return this.service.findAllIdsByClients(list);
+
+    }
 }

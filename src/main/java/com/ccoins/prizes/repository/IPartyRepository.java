@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -22,4 +23,10 @@ public interface IPartyRepository extends JpaRepository<Party, Long> {
             "WHERE T.CODE = :code " +
             "AND P.active <> 0", nativeQuery = true)
     Optional<Party> findByTableCode(@Param("code") String code);
+
+    @Query(value = "select p.id from parties p " +
+            "inner join clients_parties cp on cp.FK_PARTY = p.id " +
+            "where cp.FK_CLIENT IN (:list) " +
+            "group by p.id;",nativeQuery = true)
+    Optional<List<Long>> findAllPartyIdIn(@Param("list") List<Long> list);
 }

@@ -1,5 +1,6 @@
 package com.ccoins.prizes.service;
 
+import com.ccoins.prizes.dto.LongListDTO;
 import com.ccoins.prizes.dto.PartyDTO;
 import com.ccoins.prizes.model.projection.IPParty;
 
@@ -21,4 +22,6 @@ public interface IPartiesService {
     void logoutClientFromTables(String client);
 
     Optional<PartyDTO> findActivePartyByTableCode(String code);
+
+    List<Long> findAllIdsByClients(LongListDTO list);
 }

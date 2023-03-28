@@ -1,5 +1,6 @@
 package com.ccoins.prizes.service.impl;
 
+import com.ccoins.prizes.dto.LongListDTO;
 import com.ccoins.prizes.dto.PartyDTO;
 import com.ccoins.prizes.exceptions.BadRequestException;
 import com.ccoins.prizes.exceptions.ObjectNotFoundException;
@@ -130,5 +131,17 @@ public class PartiesService implements IPartiesService {
             party = (PartyDTO) MapperUtils.map(partyOpt.get(), PartyDTO.class);
 
         return Optional.ofNullable(party);
+    }
+
+    @Override
+    public List<Long> findAllIdsByClients(LongListDTO list) {
+
+        try{
+            Optional<List<Long>> partyOpt = this.repository.findAllPartyIdIn(list.getList());
+            return partyOpt.orElseGet(ArrayList::new);
+        }catch (Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.PARTY_ID_BY_CLIENTS_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.PARTY_ID_BY_CLIENTS_ERROR);
+        }
     }
 }
