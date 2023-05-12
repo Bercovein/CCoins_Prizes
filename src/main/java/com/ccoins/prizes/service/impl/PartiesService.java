@@ -1,7 +1,6 @@
 package com.ccoins.prizes.service.impl;
 
-import com.ccoins.prizes.dto.LongListDTO;
-import com.ccoins.prizes.dto.PartyDTO;
+import com.ccoins.prizes.dto.*;
 import com.ccoins.prizes.exceptions.BadRequestException;
 import com.ccoins.prizes.exceptions.ObjectNotFoundException;
 import com.ccoins.prizes.exceptions.constant.ExceptionConstant;
@@ -14,12 +13,16 @@ import com.ccoins.prizes.service.IPartiesService;
 import com.ccoins.prizes.utils.MapperUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.ccoins.prizes.utils.enums.GiveLeaderEnum.*;
 
 @Service
 @Slf4j
@@ -66,10 +69,15 @@ public class PartiesService implements IPartiesService {
     }
 
     @Override
-    public void addClientToParty(Long partyId, Long clientId) {
+    public void addClientToParty(Long partyId, Long clientId, boolean leader) {
 
         try{
-            this.clientPartyRepository.save(ClientParty.builder().client(clientId).party(partyId).active(true).build());
+            this.clientPartyRepository.save(ClientParty.builder()
+                    .client(clientId)
+                    .party(partyId)
+                    .active(true)
+                    .leader(leader)
+                    .build());
         }catch (Exception e) {
             throw new BadRequestException(ExceptionConstant.CLIENT_PARTY_SAVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.CLIENT_PARTY_SAVE_ERROR);
@@ -95,9 +103,9 @@ public class PartiesService implements IPartiesService {
     }
 
     @Override
-    public List<Long> findClientsByPartyId(Long id) {
+    public List<ClientPartyDTO> findClientsByPartyId(Long id) {
 
-        List<Long> idList = new ArrayList<>();
+        List<ClientPartyDTO> list = new ArrayList<>();
         List<ClientParty> clientPartyList;
 
         try {
@@ -107,9 +115,9 @@ public class PartiesService implements IPartiesService {
         }
 
         for (ClientParty cp: clientPartyList) {
-            idList.add(cp.getClient());
+            list.add(MapperUtils.map(cp,ClientPartyDTO.class));
         }
-        return idList;
+        return list;
     }
 
     @Override
@@ -143,5 +151,47 @@ public class PartiesService implements IPartiesService {
             throw new ObjectNotFoundException(ExceptionConstant.PARTY_ID_BY_CLIENTS_ERROR_CODE,
                     this.getClass(), ExceptionConstant.PARTY_ID_BY_CLIENTS_ERROR);
         }
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(Long leaderId, Long newLeaderId) {
+
+        Optional<ClientParty> leaderOpt = this.clientPartyRepository.findById(leaderId);
+
+        if(leaderOpt.isEmpty()){
+            return ResponseEntity.ok(new GenericRsDTO<>(LEADER_NOT_FOUND.getCode(), LEADER_NOT_FOUND.getMessage(), null));
+        }
+
+        ClientParty leader = leaderOpt.get();
+
+        if(!leader.isLeader() && !leader.isActive()){
+            return ResponseEntity.ok(new GenericRsDTO<>(YOU_ARE_NOT_LEADER_FOUND.getCode(), YOU_ARE_NOT_LEADER_FOUND.getMessage(), null));
+        }
+
+        Optional<ClientParty> newLeaderOpt = this.clientPartyRepository.findById(newLeaderId);
+
+        if(newLeaderOpt.isEmpty()){
+            return ResponseEntity.ok(new GenericRsDTO<>(NEW_LEADER_NOT_FOUND.getCode(), NEW_LEADER_NOT_FOUND.getMessage(), null));
+        }
+
+        ClientParty newLeader = newLeaderOpt.get();
+
+        leader.setLeader(false);
+        newLeader.setLeader(true);
+
+        List<ClientParty> clients = new ArrayList<>();
+        clients.add(leader);
+        clients.add(newLeader);
+
+        this.clientPartyRepository.saveAll(clients);
+
+        Optional<String> stringOpt = this.clientPartyRepository.findClientNameById(newLeaderId);
+
+        if(stringOpt.isEmpty()){
+            return ResponseEntity.ok(new GenericRsDTO<>(ALL_HAIL_NEW_LEADER.getCode(), ALL_HAIL_NEW_LEADER.getMessage(), null));
+        }
+
+        return ResponseEntity.ok(new GenericRsDTO<>(ALL_HAIL_NEW_LEADER.getCode(), ALL_HAIL_NEW_LEADER_NAME.getMessage().replace("?", stringOpt.get()), null));
     }
 }
