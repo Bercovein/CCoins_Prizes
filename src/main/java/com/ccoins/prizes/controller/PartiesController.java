@@ -1,11 +1,11 @@
 package com.ccoins.prizes.controller;
 
-import com.ccoins.prizes.dto.LongListDTO;
-import com.ccoins.prizes.dto.PartyDTO;
+import com.ccoins.prizes.dto.*;
 import com.ccoins.prizes.model.projection.IPParty;
 import com.ccoins.prizes.service.IPartiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,10 +32,11 @@ public class PartiesController {
         return this.service.createByTable(partyDTO);
     }
 
-    @PostMapping({"/{partyId}/client/{clientId}"})
+    @PostMapping({"/{partyId}/client/{clientId}/leader/{leader}"})
     @ResponseStatus(HttpStatus.OK)
-    void addClientToParty(@PathVariable("partyId") Long partyId, @PathVariable("clientId") Long clientId) {
-        this.service.addClientToParty(partyId,clientId);
+    void addClientToParty(@PathVariable("partyId") Long partyId, @PathVariable("clientId") Long clientId,
+                          @PathVariable("bool") boolean leader) {
+        this.service.addClientToParty(partyId,clientId,leader);
     }
 
     @GetMapping("/{id}")
@@ -44,7 +45,7 @@ public class PartiesController {
     }
 
     @GetMapping("/{id}/clients")
-    List<Long> findClientsByPartyId(@PathVariable("id") Long id){
+    List<ClientPartyDTO> findClientsByPartyId(@PathVariable("id") Long id){
         return this.service.findClientsByPartyId(id);
     }
 
@@ -61,6 +62,10 @@ public class PartiesController {
     @PostMapping("/clients")
     List<Long> findAllIdsByClients(@RequestBody LongListDTO list){
         return this.service.findAllIdsByClients(list);
+    }
 
+    @PutMapping("/leader/{leaderId}/to/{clientId}")
+    ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(@PathVariable("leaderId") Long leaderId, @PathVariable("clientId") Long clientId){
+        return this.service.giveLeaderTo(leaderId, clientId);
     }
 }
