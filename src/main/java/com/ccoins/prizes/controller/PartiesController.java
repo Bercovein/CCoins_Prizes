@@ -35,7 +35,7 @@ public class PartiesController {
     @PostMapping({"/{partyId}/client/{clientId}/leader/{leader}"})
     @ResponseStatus(HttpStatus.OK)
     void addClientToParty(@PathVariable("partyId") Long partyId, @PathVariable("clientId") Long clientId,
-                          @PathVariable("bool") boolean leader) {
+                          @PathVariable("leader") boolean leader) {
         this.service.addClientToParty(partyId,clientId,leader);
     }
 
