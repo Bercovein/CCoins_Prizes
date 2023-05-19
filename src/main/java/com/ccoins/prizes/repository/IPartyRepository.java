@@ -4,9 +4,11 @@ package com.ccoins.prizes.repository;
 import com.ccoins.prizes.model.Party;
 import com.ccoins.prizes.model.projection.IPParty;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,4 +31,31 @@ public interface IPartyRepository extends JpaRepository<Party, Long> {
             "where cp.FK_CLIENT IN (:list) " +
             "group by p.id;",nativeQuery = true)
     Optional<List<Long>> findAllPartyIdIn(@Param("list") List<Long> list);
+
+
+    @Query(value = "update parties p  " +
+            "inner join clients_parties cp on cp.fk_party = p.id  " +
+            "set p.active = 0  " +
+            "where p.id = :partyId " +
+            "and 0 = (select count(cpi.fk_client) from clients_parties cpi  " +
+            "where cpi.fk_party = :partyId  " +
+            "and cpi.active = 1)",nativeQuery = true)
+    @Transactional
+    @Modifying
+    Long closePartyIfHaveNoClients(@Param("partyId") Long partyId);
+
+    @Query(value = "select if(cp.leader, true, false) from clients_parties cp " +
+            "inner join clients c on c.id = cp.FK_CLIENT " +
+            "where c.ip = :leaderIp " +
+            "and fk_party = :partyId" +
+            "and active is true",nativeQuery = true)
+    boolean isLeaderFromParty(@Param("leaderIp") String leaderIp, @Param("partyId") Long partyId);
+
+    @Query(value = "update clients_parties " +
+            "set banned = 1 " +
+            "where fk_client = :clientId " +
+            "and fk_party = :partyId", nativeQuery = true)
+    @Transactional
+    @Modifying
+    void banClientFromParty(@Param("clientId") Long clientId, @Param("partyId") Long partyId);
 }

@@ -32,11 +32,10 @@ public class PartiesController {
         return this.service.createByTable(partyDTO);
     }
 
-    @PostMapping({"/{partyId}/client/{clientId}/leader/{leader}"})
     @ResponseStatus(HttpStatus.OK)
-    void addClientToParty(@PathVariable("partyId") Long partyId, @PathVariable("clientId") Long clientId,
-                          @PathVariable("leader") boolean leader) {
-        this.service.addClientToParty(partyId,clientId,leader);
+    @PostMapping({"/client"})
+    void asignClientToParty(@RequestBody ClientPartyDTO request) {
+        this.service.addClientToParty(request);
     }
 
     @GetMapping("/{id}")
@@ -67,5 +66,25 @@ public class PartiesController {
     @PutMapping("/leader/{leaderId}/to/{clientId}")
     ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(@PathVariable("leaderId") Long leaderId, @PathVariable("clientId") Long clientId){
         return this.service.giveLeaderTo(leaderId, clientId);
+    }
+
+    @GetMapping("/leader/{leaderIp}/party/{partyId}")
+    ResponseEntity<Boolean> isLeaderFromParty(@PathVariable("leaderIp") String leaderIp, @PathVariable("partyId") Long partyId){
+        return this.service.isLeaderFromParty(leaderIp, partyId);
+    }
+
+    @PostMapping("/is-banned")
+    ResponseEntity<Boolean> isBannedFromParty(@RequestBody ClientTableDTO request){
+        return this.service.isBannedFromParty(request);
+    }
+
+    @DeleteMapping("/{partyId}/client/{clientId}")
+    void banClientFromParty(@PathVariable("clientId") Long clientId,@PathVariable("partyId")  Long partyId) {
+        this.service.banClientFromParty(clientId, partyId);
+    }
+
+    @DeleteMapping("/{partyId}/close-if-inactive")
+    boolean closePartyIfHaveNoClients(@PathVariable("partyId") Long partyId) {
+        return this.service.closePartyIfHaveNoClients(partyId);
     }
 }

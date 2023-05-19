@@ -69,14 +69,14 @@ public class PartiesService implements IPartiesService {
     }
 
     @Override
-    public void addClientToParty(Long partyId, Long clientId, boolean leader) {
+    public void addClientToParty(ClientPartyDTO request) {
 
         try{
             this.clientPartyRepository.save(ClientParty.builder()
-                    .client(clientId)
-                    .party(partyId)
-                    .active(true)
-                    .leader(leader)
+                    .client(request.getClient())
+                    .party(request.getParty())
+                    .active(request.isActive())
+                    .leader(request.isLeader())
                     .build());
         }catch (Exception e) {
             throw new BadRequestException(ExceptionConstant.CLIENT_PARTY_SAVE_ERROR_CODE,
@@ -193,5 +193,29 @@ public class PartiesService implements IPartiesService {
         }
 
         return ResponseEntity.ok(new GenericRsDTO<>(ALL_HAIL_NEW_LEADER.getCode(), ALL_HAIL_NEW_LEADER_NAME.getMessage().replace("?", stringOpt.get()), null));
+    }
+
+    @Override
+    public boolean closePartyIfHaveNoClients(Long partyId) {
+        Long response = this.repository.closePartyIfHaveNoClients(partyId);
+        return response > 0;
+    }
+
+    @Override
+    public ResponseEntity<Boolean> isLeaderFromParty(String leaderIp, Long partyId) {
+        return ResponseEntity.ok(this.repository.isLeaderFromParty(leaderIp, partyId));
+    }
+
+    @Override
+    public void banClientFromParty(Long clientId, Long partyId) {
+        this.repository.banClientFromParty(clientId, partyId);
+    }
+
+    @Override
+    public ResponseEntity<Boolean> isBannedFromParty(ClientTableDTO request) {
+
+        boolean response = this.clientPartyRepository.isBannedFromParty(request.getClientIp(), request.getTableCode());
+
+        return ResponseEntity.ok(response);
     }
 }

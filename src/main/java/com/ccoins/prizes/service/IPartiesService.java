@@ -13,7 +13,7 @@ public interface IPartiesService {
 
     PartyDTO createByTable(PartyDTO partyDTO);
 
-    void addClientToParty(Long partyId, Long clientId, boolean leader);
+    void addClientToParty(ClientPartyDTO request);
 
     Optional<PartyDTO> findById(Long id);
 
@@ -26,4 +26,12 @@ public interface IPartiesService {
     List<Long> findAllIdsByClients(LongListDTO list);
 
     ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(Long leaderId, Long clientId);
+
+    boolean closePartyIfHaveNoClients(Long partyId);
+
+    ResponseEntity<Boolean> isLeaderFromParty(String leaderIp, Long partyId);
+
+    void banClientFromParty(Long clientId, Long partyId);
+
+    ResponseEntity<Boolean> isBannedFromParty(ClientTableDTO request);
 }
