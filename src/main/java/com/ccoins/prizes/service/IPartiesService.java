@@ -34,4 +34,6 @@ public interface IPartiesService {
     void banClientFromParty(Long clientId, Long partyId);
 
     ResponseEntity<Boolean> isBannedFromParty(ClientTableDTO request);
+
+    ResponseEntity<List<PartyDTO>> findActivePartiesByBar(Long id);
 }

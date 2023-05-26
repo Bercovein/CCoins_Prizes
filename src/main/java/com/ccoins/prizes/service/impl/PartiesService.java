@@ -218,4 +218,23 @@ public class PartiesService implements IPartiesService {
 
         return ResponseEntity.ok(response);
     }
+
+    @Override
+    public ResponseEntity<List<PartyDTO>> findActivePartiesByBar(Long id) {
+
+        List<PartyDTO> response = new ArrayList<>();
+        Optional<List<Party>> partiesOpt = Optional.empty();
+        try {
+            partiesOpt = this.repository.findActivePartiesByBar(id);
+        }catch (Exception e){
+            log.error("Falla al conectar con la base.");
+        }
+
+        if (partiesOpt.isPresent()) {
+            List<Party> parties = partiesOpt.get();
+            parties.forEach(party -> response.add(MapperUtils.map(party, PartyDTO.class)));
+        }
+        return ResponseEntity.ok(response);
+
+    }
 }

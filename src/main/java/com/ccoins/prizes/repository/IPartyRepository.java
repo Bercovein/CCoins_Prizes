@@ -58,4 +58,10 @@ public interface IPartyRepository extends JpaRepository<Party, Long> {
     @Transactional
     @Modifying
     void banClientFromParty(@Param("clientId") Long clientId, @Param("partyId") Long partyId);
+
+    @Query(value = "select p.* from parties p " +
+            "inner join bar_tables bt on bt.ID = p.FK_TABLE " +
+            "where bt.FK_BAR = :barId" +
+            " and p.active is true", nativeQuery = true)
+    Optional<List<Party>> findActivePartiesByBar(@Param("barId") Long barId);
 }

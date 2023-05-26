@@ -27,6 +27,11 @@ public class PartiesController {
         return this.service.findActivePartyByTable(id);
     }
 
+    @GetMapping("/bar/{id}")
+    ResponseEntity<List<PartyDTO>> findActivePartiesByBar(@PathVariable("id") Long id){
+        return this.service.findActivePartiesByBar(id);
+    }
+
     @PostMapping("/table")
     PartyDTO createParty(@RequestBody PartyDTO partyDTO){
         return this.service.createByTable(partyDTO);
