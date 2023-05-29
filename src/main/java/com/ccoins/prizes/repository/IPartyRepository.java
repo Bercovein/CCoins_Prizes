@@ -47,9 +47,9 @@ public interface IPartyRepository extends JpaRepository<Party, Long> {
     @Query(value = "select if(cp.leader, true, false) from clients_parties cp " +
             "inner join clients c on c.id = cp.FK_CLIENT " +
             "where c.ip = :leaderIp " +
-            "and fk_party = :partyId" +
-            "and active is true",nativeQuery = true)
-    boolean isLeaderFromParty(@Param("leaderIp") String leaderIp, @Param("partyId") Long partyId);
+            "and fk_party = :partyId " +
+            "and c.active is true",nativeQuery = true)
+    Boolean isLeaderFromParty(@Param("leaderIp") String leaderIp, @Param("partyId") Long partyId);
 
     @Query(value = "update clients_parties " +
             "set banned = 1 " +
