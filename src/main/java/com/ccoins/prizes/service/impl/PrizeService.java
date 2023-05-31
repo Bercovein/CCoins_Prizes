@@ -38,8 +38,8 @@ public class PrizeService implements IPrizeService {
     public ResponseEntity<PrizeDTO> saveOrUpdate(PrizeDTO request) {
 
         try {
-            Prize prize = this.repository.save((Prize)MapperUtils.map(request,Prize.class));
-            return ResponseEntity.ok((PrizeDTO) MapperUtils.map(prize,PrizeDTO.class));
+            Prize prize = this.repository.save(MapperUtils.map(request,Prize.class));
+            return ResponseEntity.ok( MapperUtils.map(prize,PrizeDTO.class));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.PRIZE_CREATE_OR_UPDATE_ERROR_CODE, this.getClass(), ExceptionConstant.PRIZE_CREATE_OR_UPDATE_ERROR);
         }
@@ -76,7 +76,7 @@ public class PrizeService implements IPrizeService {
 
         try {
             Optional<Prize> bar = this.repository.findById(id);
-            return ResponseEntity.ok((PrizeDTO)MapperUtils.map(bar,PrizeDTO.class));
+            return ResponseEntity.ok(MapperUtils.map(bar,PrizeDTO.class));
         }catch(Exception e){
             throw new UnauthorizedException(ExceptionConstant.PRIZE_FIND_BY_ID_ERROR_CODE,
                     this.getClass(), ExceptionConstant.PRIZE_FIND_BY_ID_ERROR);
@@ -127,7 +127,7 @@ public class PrizeService implements IPrizeService {
 
         if(listOpt.isPresent()){
             List<Prize> prizes = listOpt.get();
-            prizes.forEach(t -> list.add((PrizeDTO)MapperUtils.map(t,PrizeDTO.class)));
+            prizes.forEach(t -> list.add(MapperUtils.map(t,PrizeDTO.class)));
         }
 
         return ResponseEntity.ok(new GenericRsDTO<>(SUCCESS_CODE,String.format(PRIZES_UPDATES_BY_QUANTITY,list.size()),list));

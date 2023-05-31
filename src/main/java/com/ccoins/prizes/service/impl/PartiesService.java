@@ -58,7 +58,7 @@ public class PartiesService implements IPartiesService {
 
             party = this.repository.save(party);
 
-            response = (PartyDTO) MapperUtils.map(party, PartyDTO.class);
+            response = MapperUtils.map(party, PartyDTO.class);
         }catch (Exception e) {
             throw new BadRequestException(ExceptionConstant.PARTY_CREATE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.PARTY_CREATE_ERROR);
@@ -93,7 +93,7 @@ public class PartiesService implements IPartiesService {
             Optional<Party> partyOpt = this.repository.findById(id);
 
             if(partyOpt.isPresent()){
-                response = (PartyDTO) MapperUtils.map(partyOpt.get(),PartyDTO.class);
+                response = MapperUtils.map(partyOpt.get(),PartyDTO.class);
             }
             return Optional.ofNullable(response);
         }catch (Exception e){
@@ -136,7 +136,7 @@ public class PartiesService implements IPartiesService {
         PartyDTO party = null;
 
         if(partyOpt.isPresent())
-            party = (PartyDTO) MapperUtils.map(partyOpt.get(), PartyDTO.class);
+            party = MapperUtils.map(partyOpt.get(), PartyDTO.class);
 
         return Optional.ofNullable(party);
     }
