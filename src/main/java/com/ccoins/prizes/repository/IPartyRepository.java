@@ -42,7 +42,7 @@ public interface IPartyRepository extends JpaRepository<Party, Long> {
             "and cpi.active = 1)",nativeQuery = true)
     @Transactional
     @Modifying
-    Long closePartyIfHaveNoClients(@Param("partyId") Long partyId);
+    Integer closePartyIfHaveNoClients(@Param("partyId") Long partyId);
 
     @Query(value = "select cp.leader from clients_parties cp " +
             "inner join clients c on c.id = cp.FK_CLIENT " +

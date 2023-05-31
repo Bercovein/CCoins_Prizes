@@ -229,7 +229,7 @@ public class PartiesService implements IPartiesService {
     public boolean closePartyIfHaveNoClients(Long partyId) {
 
         try {
-            Long response = this.repository.closePartyIfHaveNoClients(partyId);
+            Integer response = this.repository.closePartyIfHaveNoClients(partyId);
             return response > 0L;
         }catch(Exception e){
             throw new BadRequestException(ExceptionConstant.CLOSING_PARTY_ERROR_CODE,
