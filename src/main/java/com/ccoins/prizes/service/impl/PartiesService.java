@@ -40,7 +40,13 @@ public class PartiesService implements IPartiesService {
 
     @Override
     public Optional<IPParty> findActivePartyByTable(Long id) {
-        return this.repository.findByTableAndActive(id,true);
+
+        try {
+            return this.repository.findByTableAndActive(id, true);
+        }catch(Exception e){
+            throw new BadRequestException(ExceptionConstant.PARTY_FIND_ACTIVE_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.PARTY_FIND_ACTIVE_ERROR);
+        }
     }
 
     @Override
@@ -122,19 +128,32 @@ public class PartiesService implements IPartiesService {
 
     @Override
     public void logoutClientFromTables(String client) {
-        List<ClientParty> tables = this.clientPartyRepository.findByClientAndActive(client, true);
 
-        tables.forEach(table -> {table.setActive(false);
-            this.clientPartyRepository.save(table);
-        });
+        try {
+            List<ClientParty> tables = this.clientPartyRepository.findByClientAndActive(client, true);
+
+            tables.forEach(table -> {
+                table.setActive(false);
+                this.clientPartyRepository.save(table);
+            });
+        }catch(Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.LOGOUT_CLIENTS_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.LOGOUT_CLIENTS_ERROR);
+        }
     }
 
     @Override
     public Optional<PartyDTO> findActivePartyByTableCode(String code) {
 
-        Optional<Party> partyOpt = this.repository.findByTableCode(code);
+        Optional<Party> partyOpt = Optional.empty();
         PartyDTO party = null;
 
+        try {
+            partyOpt = this.repository.findByTableCode(code);
+        }catch (Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.ACTIVE_PARTY_BY_TABLE_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.ACTIVE_PARTY_BY_TABLE_ERROR);
+        }
         if(partyOpt.isPresent())
             party = MapperUtils.map(partyOpt.get(), PartyDTO.class);
 
@@ -157,7 +176,13 @@ public class PartiesService implements IPartiesService {
     @Transactional
     public ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(String leaderId, Long newLeaderId) {
 
-        Optional<ClientParty> leaderOpt = this.clientPartyRepository.findByIp(leaderId);
+        Optional<ClientParty> leaderOpt = Optional.empty();
+        Optional<ClientParty> newLeaderOpt = Optional.empty();
+        Optional<String> stringOpt;
+
+        try {
+            leaderOpt = this.clientPartyRepository.findByIp(leaderId);
+        }catch (Exception ignored){}
 
         if(leaderOpt.isEmpty()){
             return ResponseEntity.ok(new GenericRsDTO<>(LEADER_NOT_FOUND.getCode(), LEADER_NOT_FOUND.getMessage(), null));
@@ -169,7 +194,9 @@ public class PartiesService implements IPartiesService {
             return ResponseEntity.ok(new GenericRsDTO<>(YOU_ARE_NOT_LEADER_FOUND.getCode(), YOU_ARE_NOT_LEADER_FOUND.getMessage(), null));
         }
 
-        Optional<ClientParty> newLeaderOpt = this.clientPartyRepository.findById(newLeaderId);
+        try {
+            newLeaderOpt = this.clientPartyRepository.findById(newLeaderId);
+        }catch (Exception ignored){}
 
         if(newLeaderOpt.isEmpty()){
             return ResponseEntity.ok(new GenericRsDTO<>(NEW_LEADER_NOT_FOUND.getCode(), NEW_LEADER_NOT_FOUND.getMessage(), null));
@@ -184,10 +211,13 @@ public class PartiesService implements IPartiesService {
         clients.add(leader);
         clients.add(newLeader);
 
-        this.clientPartyRepository.saveAll(clients);
-
-        Optional<String> stringOpt = this.clientPartyRepository.findClientNameById(newLeaderId);
-
+        try {
+            this.clientPartyRepository.saveAll(clients);
+            stringOpt = this.clientPartyRepository.findClientNameById(newLeaderId);
+        }catch(Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.SAVE_ALL_CLIENTS_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.SAVE_ALL_CLIENTS_ERROR);
+        }
         if(stringOpt.isEmpty()){
             return ResponseEntity.ok(new GenericRsDTO<>(ALL_HAIL_NEW_LEADER.getCode(), ALL_HAIL_NEW_LEADER.getMessage(), null));
         }
@@ -197,8 +227,14 @@ public class PartiesService implements IPartiesService {
 
     @Override
     public boolean closePartyIfHaveNoClients(Long partyId) {
-        Long response = this.repository.closePartyIfHaveNoClients(partyId);
-        return response > 0;
+
+        try {
+            Long response = this.repository.closePartyIfHaveNoClients(partyId);
+            return response > 0L;
+        }catch(Exception e){
+            throw new BadRequestException(ExceptionConstant.CLOSING_PARTY_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.CLOSING_PARTY_ERROR);
+        }
     }
 
     @Override
@@ -216,15 +252,25 @@ public class PartiesService implements IPartiesService {
 
     @Override
     public void banClientFromParty(Long clientId, Long partyId) {
-        this.repository.banClientFromParty(clientId, partyId);
+        try {
+            this.repository.banClientFromParty(clientId, partyId);
+        }catch(Exception e){
+            throw new BadRequestException(ExceptionConstant.BAN_CLIENT_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.BAN_CLIENT_ERROR);
+        }
     }
 
     @Override
     public ResponseEntity<Boolean> isBannedFromParty(ClientTableDTO request) {
 
-        boolean response = this.clientPartyRepository.isBannedFromParty(request.getClientIp(), request.getTableCode());
+        try {
+            boolean response = this.clientPartyRepository.isBannedFromParty(request.getClientIp(), request.getTableCode());
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.IS_BANNED_CLIENT_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.IS_BANNED_CLIENT_ERROR);
+        }
 
-        return ResponseEntity.ok(response);
     }
 
     @Override

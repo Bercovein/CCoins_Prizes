@@ -62,4 +62,25 @@ public class ExceptionConstant {
     public static final String PARTY_ID_BY_CLIENTS_ERROR_CODE = "0015";
     public static final String PARTY_ID_BY_CLIENTS_ERROR = GET_ERROR_LABEL.concat("parties from clients");
 
+    public static final String PARTY_FIND_ACTIVE_ERROR_CODE = "0016";
+    public static final String PARTY_FIND_ACTIVE_ERROR = GET_ERROR_LABEL.concat("active parties");
+
+    public static final String LOGOUT_CLIENTS_ERROR_CODE = "0017";
+    public static final String LOGOUT_CLIENTS_ERROR = "Error trying to logout clients from table";
+
+    public static final String ACTIVE_PARTY_BY_TABLE_ERROR_CODE = "0018";
+    public static final String ACTIVE_PARTY_BY_TABLE_ERROR = "Error finding party by table code";
+
+    public static final String SAVE_ALL_CLIENTS_ERROR_CODE = "0019";
+    public static final String SAVE_ALL_CLIENTS_ERROR = "Error saving all clients when leader was changing";
+
+    public static final String CLOSING_PARTY_ERROR_CODE = "0020";
+    public static final String CLOSING_PARTY_ERROR = "Error closing party if it has no clients";
+
+    public static final String BAN_CLIENT_ERROR_CODE = "0021";
+    public static final String BAN_CLIENT_ERROR = "Error banning client";
+
+    public static final String IS_BANNED_CLIENT_ERROR_CODE = "0021";
+    public static final String IS_BANNED_CLIENT_ERROR = "Error verifying banned client";
+
 }
