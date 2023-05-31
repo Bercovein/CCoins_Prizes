@@ -44,12 +44,12 @@ public interface IPartyRepository extends JpaRepository<Party, Long> {
     @Modifying
     Long closePartyIfHaveNoClients(@Param("partyId") Long partyId);
 
-    @Query(value = "select if(cp.leader, true, false) from clients_parties cp " +
+    @Query(value = "select cp.leader from clients_parties cp " +
             "inner join clients c on c.id = cp.FK_CLIENT " +
             "where c.ip = :leaderIp " +
             "and fk_party = :partyId " +
             "and cp.active = 1",nativeQuery = true)
-    Boolean isLeaderFromParty(@Param("leaderIp") String leaderIp, @Param("partyId") Long partyId);
+    Integer isLeaderFromParty(@Param("leaderIp") String leaderIp, @Param("partyId") Long partyId);
 
     @Query(value = "update clients_parties " +
             "set banned = 1 " +

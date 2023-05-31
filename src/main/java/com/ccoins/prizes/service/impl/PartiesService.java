@@ -203,7 +203,15 @@ public class PartiesService implements IPartiesService {
 
     @Override
     public ResponseEntity<Boolean> isLeaderFromParty(String leaderIp, Long partyId) {
-        return ResponseEntity.ok(this.repository.isLeaderFromParty(leaderIp, partyId));
+
+        Integer isLeader = null;
+
+        try {
+            isLeader = this.repository.isLeaderFromParty(leaderIp, partyId);
+        }catch (Exception e){
+            ResponseEntity.ok(false);
+        }
+        return ResponseEntity.ok(isLeader != null && isLeader == 1);
     }
 
     @Override
