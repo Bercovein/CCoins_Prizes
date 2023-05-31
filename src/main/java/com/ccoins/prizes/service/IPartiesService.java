@@ -25,7 +25,7 @@ public interface IPartiesService {
 
     List<Long> findAllIdsByClients(LongListDTO list);
 
-    ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(Long leaderId, Long clientId);
+    ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(String leaderId, Long clientId);
 
     boolean closePartyIfHaveNoClients(Long partyId);
 

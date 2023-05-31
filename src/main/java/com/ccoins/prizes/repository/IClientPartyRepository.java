@@ -31,4 +31,9 @@ public interface IClientPartyRepository extends JpaRepository<ClientParty, Long>
             "where c.ip = :clientIp " +
             "and bt.CODE = :tableCode",nativeQuery = true)
     Boolean isBannedFromParty(@Param("clientIp") String clientIp, @Param("tableCode") String tableCode);
+
+    @Query(value = "select cp.* from clients_parties cp " +
+            "inner join clients c on c.id = cp.FK_CLIENT " +
+            "where c.ip = :clientIp ", nativeQuery = true)
+    Optional<ClientParty> findByIp(@Param("clientIp") String leaderId);
 }

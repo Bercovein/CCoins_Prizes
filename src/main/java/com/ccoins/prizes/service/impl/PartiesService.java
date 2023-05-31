@@ -155,9 +155,9 @@ public class PartiesService implements IPartiesService {
 
     @Override
     @Transactional
-    public ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(Long leaderId, Long newLeaderId) {
+    public ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(String leaderId, Long newLeaderId) {
 
-        Optional<ClientParty> leaderOpt = this.clientPartyRepository.findById(leaderId);
+        Optional<ClientParty> leaderOpt = this.clientPartyRepository.findByIp(leaderId);
 
         if(leaderOpt.isEmpty()){
             return ResponseEntity.ok(new GenericRsDTO<>(LEADER_NOT_FOUND.getCode(), LEADER_NOT_FOUND.getMessage(), null));
