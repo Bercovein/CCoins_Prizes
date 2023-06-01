@@ -54,7 +54,7 @@ public class PartiesController {
     }
 
     @DeleteMapping("/client/{client}")
-    void logoutClientFromTables(String client){
+    void logoutClientFromTables(@PathVariable("client") String client){
         this.service.logoutClientFromTables(client);
     }
 
