@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -128,7 +127,6 @@ public class PartiesService implements IPartiesService {
     }
 
     @Override
-    @Transactional
     public void logoutClientFromTables(String client) {
 
         try {
@@ -148,7 +146,6 @@ public class PartiesService implements IPartiesService {
         }
     }
 
-    @Transactional
     public void giveLeaderWhenLogout(String client, ClientParty  clientParty){
 
         List<ClientParty> cp = this.clientPartyRepository.findByParty(clientParty.getParty());
@@ -196,7 +193,6 @@ public class PartiesService implements IPartiesService {
     }
 
     @Override
-    @Transactional
     public ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(String leaderIp, Long newLeaderId) {
 
         Optional<ClientParty> leaderOpt = Optional.empty();
