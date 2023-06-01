@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ClientPartyDTO {
 
+    private Long id;
+
     private Long client;
 
     private Long party;

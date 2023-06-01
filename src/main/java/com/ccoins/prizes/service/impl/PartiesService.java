@@ -75,19 +75,24 @@ public class PartiesService implements IPartiesService {
     }
 
     @Override
-    public void addClientToParty(ClientPartyDTO request) {
+    public ResponseEntity<ClientPartyDTO> addClientToParty(ClientPartyDTO request) {
 
         try{
             Optional<ClientParty> clientParty = this.clientPartyRepository.findByPartyAndClientAndActiveIsTrue(request.getParty(), request.getClient());
-
+            ClientParty cp;
             if(clientParty.isEmpty()) {
-                this.clientPartyRepository.save(ClientParty.builder()
+                cp = this.clientPartyRepository.save(ClientParty.builder()
                         .client(request.getClient())
                         .party(request.getParty())
                         .active(request.isActive())
                         .leader(request.isLeader())
                         .build());
+            }else{
+                cp = clientParty.get();
             }
+
+            return ResponseEntity.ok(MapperUtils.map(cp, ClientPartyDTO.class));
+
         }catch (Exception e) {
             throw new BadRequestException(ExceptionConstant.CLIENT_PARTY_SAVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.CLIENT_PARTY_SAVE_ERROR);

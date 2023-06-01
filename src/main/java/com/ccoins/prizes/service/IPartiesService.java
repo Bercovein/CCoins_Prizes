@@ -13,7 +13,7 @@ public interface IPartiesService {
 
     PartyDTO createByTable(PartyDTO partyDTO);
 
-    void addClientToParty(ClientPartyDTO request);
+    ResponseEntity<ClientPartyDTO> addClientToParty(ClientPartyDTO request);
 
     Optional<PartyDTO> findById(Long id);
 

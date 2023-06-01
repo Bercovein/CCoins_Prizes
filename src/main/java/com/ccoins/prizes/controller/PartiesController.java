@@ -39,8 +39,8 @@ public class PartiesController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping({"/client"})
-    void asignClientToParty(@RequestBody ClientPartyDTO request) {
-        this.service.addClientToParty(request);
+    ResponseEntity<ClientPartyDTO> asignClientToParty(@RequestBody ClientPartyDTO request) {
+        return this.service.addClientToParty(request);
     }
 
     @GetMapping("/{id}")
