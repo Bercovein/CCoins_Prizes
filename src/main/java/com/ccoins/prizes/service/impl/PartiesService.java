@@ -78,12 +78,16 @@ public class PartiesService implements IPartiesService {
     public void addClientToParty(ClientPartyDTO request) {
 
         try{
-            this.clientPartyRepository.save(ClientParty.builder()
-                    .client(request.getClient())
-                    .party(request.getParty())
-                    .active(request.isActive())
-                    .leader(request.isLeader())
-                    .build());
+            Optional<ClientParty> clientParty = this.clientPartyRepository.findByPartyAndClientAndActiveIsTrue(request.getParty(), request.getClient());
+
+            if(clientParty.isEmpty()) {
+                this.clientPartyRepository.save(ClientParty.builder()
+                        .client(request.getClient())
+                        .party(request.getParty())
+                        .active(request.isActive())
+                        .leader(request.isLeader())
+                        .build());
+            }
         }catch (Exception e) {
             throw new BadRequestException(ExceptionConstant.CLIENT_PARTY_SAVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.CLIENT_PARTY_SAVE_ERROR);

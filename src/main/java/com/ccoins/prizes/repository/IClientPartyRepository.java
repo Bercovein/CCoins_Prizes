@@ -16,6 +16,8 @@ public interface IClientPartyRepository extends JpaRepository<ClientParty, Long>
 
     List<ClientParty> findByParty(Long id);
 
+    Optional<ClientParty> findByPartyAndClientAndActiveIsTrue(Long party, Long client);
+
     @Query(value = "select cp.* from clients_parties cp  " +
             " inner join  clients c on c.id = cp.FK_CLIENT " +
             " where c.ip = :client " +
