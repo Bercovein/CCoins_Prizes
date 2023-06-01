@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.ccoins.prizes.utils.enums.GiveLeaderEnum.*;
 
@@ -136,7 +137,9 @@ public class PartiesService implements IPartiesService {
             clientParties.forEach(clientParty -> {
                 clientParty.setActive(false);
                 this.clientPartyRepository.save(clientParty);
-                this.giveLeaderWhenLogout(client, clientParty);
+                if(clientParty.isLeader()) {
+                    this.giveLeaderWhenLogout(client, clientParty);
+                }
             });
         }catch(Exception e){
             throw new ObjectNotFoundException(ExceptionConstant.LOGOUT_CLIENTS_ERROR_CODE,
@@ -146,12 +149,19 @@ public class PartiesService implements IPartiesService {
 
     @Transactional
     public void giveLeaderWhenLogout(String client, ClientParty  clientParty){
-        if(clientParty.isLeader()){
-            List<ClientParty> cp = this.clientPartyRepository.findByParty(clientParty.getParty());
-            if(!cp.isEmpty()) {
-                this.giveLeaderTo(client, cp.get(0).getClient());
-            }
+
+        List<ClientParty> cp = this.clientPartyRepository.findByParty(clientParty.getParty());
+
+        if(cp.isEmpty()) {
+            return;
         }
+        ClientParty newLeader = cp.stream().filter(ClientParty::isActive).collect(Collectors.toList()).stream().findFirst().orElse(null);
+
+        if(newLeader == null) {
+            return;
+        }
+
+        this.giveLeaderTo(client, newLeader.getClient());
     }
 
     @Override
