@@ -16,10 +16,11 @@ public interface IClientPartyRepository extends JpaRepository<ClientParty, Long>
 
     List<ClientParty> findByParty(Long id);
 
-    @Query("from ClientParty" +
-            " where client = :client" +
-            " and active is true")
-    List<ClientParty> findByClientAndActiveTrue(@Param("client") String client);
+    @Query(value = "select cp.* from clients_parties cp  " +
+            " inner join  clients c on c.id = cp.FK_CLIENT " +
+            " where c.ip = :client " +
+            " and cp.ACTIVE is true", nativeQuery = true)
+    List<ClientParty> findByIpAndActiveTrue(@Param("client") String client);
 
     @Query(value = "SELECT c.NICK_NAME FROM clients_parties cp " +
             "inner join clients c on c.id = cp.FK_CLIENT " +

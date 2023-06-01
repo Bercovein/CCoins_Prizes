@@ -132,7 +132,8 @@ public class PartiesService implements IPartiesService {
     public void logoutClientFromTables(String client) {
 
         try {
-            List<ClientParty> clientParties = this.clientPartyRepository.findByClientAndActiveTrue(client);
+
+            List<ClientParty> clientParties = this.clientPartyRepository.findByIpAndActiveTrue(client);
 
             clientParties.forEach(clientParty -> {
                 clientParty.setActive(false);
