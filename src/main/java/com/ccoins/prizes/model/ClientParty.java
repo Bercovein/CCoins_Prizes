@@ -13,12 +13,14 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name="CLIENTS_PARTIES")
+@IdClass(CompositeKey.class)
 public class ClientParty {
 
     @Id
     @Column(name="FK_CLIENT")
     private Long client;
 
+    @Id
     @Column(name="FK_PARTY")
     private Long party;
 
