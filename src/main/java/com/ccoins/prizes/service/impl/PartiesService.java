@@ -283,7 +283,11 @@ public class PartiesService implements IPartiesService {
     public ResponseEntity<Boolean> isBannedFromParty(ClientTableDTO request) {
 
         try {
-            boolean response = this.clientPartyRepository.isBannedFromParty(request.getClientIp(), request.getTableCode());
+            Boolean response = this.clientPartyRepository.isBannedFromParty(request.getClientIp(), request.getTableCode());
+
+            if(response ==  null){
+                response = false;
+            }
             return ResponseEntity.ok(response);
         }catch(Exception e){
             throw new ObjectNotFoundException(ExceptionConstant.IS_BANNED_CLIENT_ERROR_CODE,
