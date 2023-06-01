@@ -135,7 +135,7 @@ public class PartiesService implements IPartiesService {
 
             clientParties.forEach(clientParty -> {
                 clientParty.setActive(false);
-                this.clientPartyRepository.save(clientParty);
+                clientParty = this.clientPartyRepository.save(clientParty);
                 if(clientParty.isLeader()) {
                     this.giveLeaderWhenLogout(client, clientParty);
                 }
