@@ -80,7 +80,7 @@ public class ExceptionConstant {
     public static final String BAN_CLIENT_ERROR_CODE = "0021";
     public static final String BAN_CLIENT_ERROR = "Error banning client";
 
-    public static final String IS_BANNED_CLIENT_ERROR_CODE = "0021";
+    public static final String IS_BANNED_CLIENT_ERROR_CODE = "0022";
     public static final String IS_BANNED_CLIENT_ERROR = "Error verifying banned client";
 
 }

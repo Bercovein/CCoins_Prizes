@@ -24,7 +24,8 @@ public interface IClientPartyRepository extends JpaRepository<ClientParty, Long>
 
     @Query(value = "SELECT c.NICK_NAME FROM clients_parties cp " +
             "inner join clients c on c.id = cp.FK_CLIENT " +
-            "where c.id = :id", nativeQuery = true)
+            "where c.id = :id " +
+            " and cp.ACTIVE is true", nativeQuery = true)
     Optional<String> findClientNameById(@Param("id") Long newLeaderId);
 
 
@@ -33,11 +34,13 @@ public interface IClientPartyRepository extends JpaRepository<ClientParty, Long>
             "inner join parties p on p.id = cp.FK_PARTY " +
             "inner join bar_tables bt on bt.id = p.FK_TABLE " +
             "where c.ip = :clientIp " +
-            "and bt.CODE = :tableCode",nativeQuery = true)
+            "and bt.CODE = :tableCode " +
+            " and cp.ACTIVE is true",nativeQuery = true)
     Boolean isBannedFromParty(@Param("clientIp") String clientIp, @Param("tableCode") String tableCode);
 
     @Query(value = "select cp.* from clients_parties cp " +
             "inner join clients c on c.id = cp.FK_CLIENT " +
-            "where c.ip = :clientIp ", nativeQuery = true)
+            "where c.ip = :clientIp " +
+            " and cp.ACTIVE is true", nativeQuery = true)
     Optional<ClientParty> findByIp(@Param("clientIp") String leaderId);
 }
