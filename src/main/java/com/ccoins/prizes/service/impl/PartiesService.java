@@ -127,18 +127,30 @@ public class PartiesService implements IPartiesService {
     }
 
     @Override
+    @Transactional
     public void logoutClientFromTables(String client) {
 
         try {
-            List<ClientParty> tables = this.clientPartyRepository.findByClientAndActive(client, true);
+            List<ClientParty> clientParties = this.clientPartyRepository.findByClientAndActive(client, true);
 
-            tables.forEach(table -> {
-                table.setActive(false);
-                this.clientPartyRepository.save(table);
+            clientParties.forEach(clientParty -> {
+                clientParty.setActive(false);
+                this.clientPartyRepository.save(clientParty);
+                this.giveLeaderWhenLogout(client, clientParty);
             });
         }catch(Exception e){
             throw new ObjectNotFoundException(ExceptionConstant.LOGOUT_CLIENTS_ERROR_CODE,
                     this.getClass(), ExceptionConstant.LOGOUT_CLIENTS_ERROR);
+        }
+    }
+
+    @Transactional
+    public void giveLeaderWhenLogout(String client, ClientParty  clientParty){
+        if(clientParty.isLeader()){
+            List<ClientParty> cp = this.clientPartyRepository.findByParty(clientParty.getParty());
+            if(!cp.isEmpty()) {
+                this.giveLeaderTo(client, cp.get(0).getClient());
+            }
         }
     }
 
@@ -174,14 +186,14 @@ public class PartiesService implements IPartiesService {
 
     @Override
     @Transactional
-    public ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(String leaderId, Long newLeaderId) {
+    public ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(String leaderIp, Long newLeaderId) {
 
         Optional<ClientParty> leaderOpt = Optional.empty();
         Optional<ClientParty> newLeaderOpt = Optional.empty();
         Optional<String> stringOpt;
 
         try {
-            leaderOpt = this.clientPartyRepository.findByIp(leaderId);
+            leaderOpt = this.clientPartyRepository.findByIp(leaderIp);
         }catch (Exception ignored){}
 
         if(leaderOpt.isEmpty()){
