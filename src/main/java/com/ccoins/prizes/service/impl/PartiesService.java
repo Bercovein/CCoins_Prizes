@@ -250,7 +250,9 @@ public class PartiesService implements IPartiesService {
             return ResponseEntity.ok(new GenericRsDTO<>(ALL_HAIL_NEW_LEADER.getCode(), ALL_HAIL_NEW_LEADER.getMessage(), null));
         }
 
-        return ResponseEntity.ok(new GenericRsDTO<>(ALL_HAIL_NEW_LEADER.getCode(), ALL_HAIL_NEW_LEADER_NAME.getMessage().concat(stringOpt.get()), null));
+        return ResponseEntity.ok(new GenericRsDTO<>(ALL_HAIL_NEW_LEADER.getCode(), ALL_HAIL_NEW_LEADER_NAME.getMessage()
+                .concat(stringOpt.get())
+                , null));
     }
 
     @Override

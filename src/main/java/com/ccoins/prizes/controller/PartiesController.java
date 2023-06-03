@@ -68,7 +68,7 @@ public class PartiesController {
         return this.service.findAllIdsByClients(list);
     }
 
-    @PutMapping("/leader/{leaderId}/to/{clientId}")
+    @PutMapping(value = "/leader/{leaderId}/to/{clientId}")
     ResponseEntity<GenericRsDTO<ResponseDTO>> giveLeaderTo(@PathVariable("leaderId") String leaderId, @PathVariable("clientId") Long clientId){
         return this.service.giveLeaderTo(leaderId, clientId);
     }
