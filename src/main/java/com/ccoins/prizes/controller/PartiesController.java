@@ -54,8 +54,8 @@ public class PartiesController {
     }
 
     @DeleteMapping("/client/{client}")
-    void logoutClientFromTables(@PathVariable("client") String client){
-        this.service.logoutClientFromTables(client);
+    void logoutClientFromParties(@PathVariable("client") String client){
+        this.service.logoutClientFromParties(client);
     }
 
     @GetMapping("/table/code/{code}")
@@ -91,5 +91,10 @@ public class PartiesController {
     @DeleteMapping("/{partyId}/close-if-inactive")
     boolean closePartyIfHaveNoClients(@PathVariable("partyId") Long partyId) {
         return this.service.closePartyIfHaveNoClients(partyId);
+    }
+
+    @DeleteMapping("/client/{client}/but/{partyId}")
+    void logoutClientFromPartiesBut(@PathVariable("client") String client, @PathVariable("partyId") Long partyId){
+        this.service.logoutClientFromPartiesBut(client,partyId);
     }
 }

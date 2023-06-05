@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -136,23 +137,44 @@ public class PartiesService implements IPartiesService {
     }
 
     @Override
-    public void logoutClientFromTables(String client) {
+    public void logoutClientFromParties(String client) {
 
         try {
 
             List<ClientParty> clientParties = this.clientPartyRepository.findByIpAndActiveTrue(client);
 
-            clientParties.forEach(clientParty -> {
-                clientParty.setActive(false);
-                clientParty = this.clientPartyRepository.save(clientParty);
-                if(clientParty.isLeader()) {
-                    this.giveLeaderWhenLogout(client, clientParty);
-                }
-            });
+            this.logoutClientPartyByList(client, clientParties);
         }catch(Exception e){
             throw new ObjectNotFoundException(ExceptionConstant.LOGOUT_CLIENTS_ERROR_CODE,
                     this.getClass(), ExceptionConstant.LOGOUT_CLIENTS_ERROR);
         }
+    }
+
+    @Override
+    public void logoutClientFromPartiesBut(String client, Long partyId) {
+
+        try {
+
+            List<ClientParty> clientParties = this.clientPartyRepository.findByIpAndActiveTrue(client);
+
+            clientParties = clientParties.stream().filter(clientParty -> !Objects.equals(clientParty.getParty(), partyId)).collect(Collectors.toList());
+
+            this.logoutClientPartyByList(client, clientParties);
+        }catch(Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.LOGOUT_CLIENTS_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.LOGOUT_CLIENTS_ERROR);
+        }
+    }
+
+    private void logoutClientPartyByList(String client, List<ClientParty> clientParties){
+
+        clientParties.forEach(clientParty -> {
+            clientParty.setActive(false);
+            clientParty = this.clientPartyRepository.save(clientParty);
+            if(clientParty.isLeader()) {
+                this.giveLeaderWhenLogout(client, clientParty);
+            }
+        });
     }
 
     public void giveLeaderWhenLogout(String client, ClientParty  clientParty){

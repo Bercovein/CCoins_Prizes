@@ -19,7 +19,9 @@ public interface IPartiesService {
 
     List<ClientPartyDTO> findClientsByPartyId(Long id);
 
-    void logoutClientFromTables(String client);
+    void logoutClientFromParties(String client);
+
+    void logoutClientFromPartiesBut(String client, Long partyId);
 
     Optional<PartyDTO> findActivePartyByTableCode(String code);
 
