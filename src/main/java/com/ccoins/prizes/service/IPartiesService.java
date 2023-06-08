@@ -42,4 +42,6 @@ public interface IPartiesService {
     ResponseEntity<List<PartyDTO>> findActivePartiesByBar(Long id);
 
     Optional<ClientPartyDTO> findLeaderFromParty(Long partyId);
+
+    ClientPartyDTO findClientByClientIdAndPartyAndActive(Long clientId, Long partyId);
 }

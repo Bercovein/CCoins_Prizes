@@ -107,4 +107,9 @@ public class PartiesController {
     public Optional<ClientPartyDTO> findByIp(@PathVariable("ip") String ip){
         return this.service.findByIp(ip);
     }
+
+    @GetMapping("/client/{clientId}/party/{partyId}")
+    ClientPartyDTO findClientByClientIdAndPartyAndActive(@PathVariable("clientId") Long clientId, @PathVariable("partyId") Long partyId){
+        return this.service.findClientByClientIdAndPartyAndActive(clientId, partyId);
+    }
 }

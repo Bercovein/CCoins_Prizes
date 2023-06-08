@@ -233,7 +233,6 @@ public class PartiesService implements IPartiesService {
                     this.getClass(), ExceptionConstant.GET_CLIENT_PARTY_BY_IP_ERROR);
         }
 
-
     }
 
     @Override
@@ -370,6 +369,23 @@ public class PartiesService implements IPartiesService {
 
             if (leaderOpt.isPresent()) {
                 response = Optional.of(MapperUtils.map(leaderOpt.get(), ClientPartyDTO.class));
+            }
+            return response;
+
+        }catch(Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.GET_LEADER_FROM_PARTY_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.GET_LEADER_FROM_PARTY_ERROR);
+        }
+    }
+
+    @Override
+    public ClientPartyDTO findClientByClientIdAndPartyAndActive(Long clientId, Long partyId) {
+        try {
+            Optional<ClientParty> leaderOpt = this.clientPartyRepository.findByClientIdAndPartyAndActive(clientId, partyId);
+            ClientPartyDTO response = null;
+
+            if (leaderOpt.isPresent()) {
+                response = MapperUtils.map(leaderOpt.get(), ClientPartyDTO.class);
             }
             return response;
 

@@ -46,4 +46,11 @@ public interface IClientPartyRepository extends JpaRepository<ClientParty, Long>
     Optional<ClientParty> findByIp(@Param("clientIp") String leaderId);
 
     Optional<ClientParty> findByPartyAndLeaderIsTrue(Long partyId);
+
+    @Query(value = "select cp.* from clients_parties cp " +
+            "inner join clients c on c.id = cp.FK_CLIENT " +
+            "where c.id = :clientId " +
+            " and cp.ACTIVE is true" +
+            " and cp.FK_PARTY = :partyId", nativeQuery = true)
+    Optional<ClientParty> findByClientIdAndPartyAndActive(@Param("clientId") Long clientId, @Param("partyId") Long partyId);
 }
