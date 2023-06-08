@@ -83,4 +83,10 @@ public class ExceptionConstant {
     public static final String IS_BANNED_CLIENT_ERROR_CODE = "0022";
     public static final String IS_BANNED_CLIENT_ERROR = "Error verifying banned client";
 
+    public static final String GET_LEADER_FROM_PARTY_ERROR_CODE = "0023";
+    public static final String GET_LEADER_FROM_PARTY_ERROR = "Error when get leader from party";
+
+    public static final String GET_CLIENT_PARTY_BY_IP_ERROR_CODE = "0024";
+    public static final String GET_CLIENT_PARTY_BY_IP_ERROR = "Error when get client party by ip";
+
 }

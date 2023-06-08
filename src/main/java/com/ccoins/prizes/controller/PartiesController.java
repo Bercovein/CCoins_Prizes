@@ -97,4 +97,14 @@ public class PartiesController {
     void logoutClientFromPartiesBut(@PathVariable("client") String client, @PathVariable("partyId") Long partyId){
         this.service.logoutClientFromPartiesBut(client,partyId);
     }
+
+    @GetMapping("/leader/party/{partyId}")
+    public Optional<ClientPartyDTO> findLeaderFromParty(@PathVariable("partyId") Long partyId){
+        return this.service.findLeaderFromParty(partyId);
+    }
+
+    @GetMapping("/client/ip/{ip}")
+    public Optional<ClientPartyDTO> findByIp(@PathVariable("ip") String ip){
+        return this.service.findByIp(ip);
+    }
 }

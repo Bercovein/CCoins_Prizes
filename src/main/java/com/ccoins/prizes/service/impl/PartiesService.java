@@ -140,10 +140,8 @@ public class PartiesService implements IPartiesService {
     public void logoutClientFromParties(String client) {
 
         try {
-
             List<ClientParty> clientParties = this.clientPartyRepository.findByIpAndActiveTrue(client);
-
-            this.logoutClientPartyByList(client, clientParties);
+            this.logoutClientPartyByList(clientParties);
         }catch(Exception e){
             throw new ObjectNotFoundException(ExceptionConstant.LOGOUT_CLIENTS_ERROR_CODE,
                     this.getClass(), ExceptionConstant.LOGOUT_CLIENTS_ERROR);
@@ -159,21 +157,18 @@ public class PartiesService implements IPartiesService {
 
             clientParties = clientParties.stream().filter(clientParty -> !Objects.equals(clientParty.getParty(), partyId)).collect(Collectors.toList());
 
-            this.logoutClientPartyByList(client, clientParties);
+            this.logoutClientPartyByList(clientParties);
         }catch(Exception e){
             throw new ObjectNotFoundException(ExceptionConstant.LOGOUT_CLIENTS_ERROR_CODE,
                     this.getClass(), ExceptionConstant.LOGOUT_CLIENTS_ERROR);
         }
     }
 
-    private void logoutClientPartyByList(String client, List<ClientParty> clientParties){
+    private void logoutClientPartyByList(List<ClientParty> clientParties){
 
         clientParties.forEach(clientParty -> {
             clientParty.setActive(false);
-            clientParty = this.clientPartyRepository.save(clientParty);
-            if(clientParty.isLeader()) {
-                this.giveLeaderWhenLogout(client, clientParty);
-            }
+            this.clientPartyRepository.save(clientParty);
         });
     }
 
@@ -189,8 +184,7 @@ public class PartiesService implements IPartiesService {
         if(newLeader == null) {
             return;
         }
-
-        this.giveLeaderTo(client, newLeader.getClient());
+        this.giveLeaderTo(client, newLeader.getId());
     }
 
     @Override
@@ -221,6 +215,25 @@ public class PartiesService implements IPartiesService {
             throw new ObjectNotFoundException(ExceptionConstant.PARTY_ID_BY_CLIENTS_ERROR_CODE,
                     this.getClass(), ExceptionConstant.PARTY_ID_BY_CLIENTS_ERROR);
         }
+    }
+
+    @Override
+    public Optional<ClientPartyDTO> findByIp(String ip){
+
+        try{
+            Optional<ClientPartyDTO> response = Optional.empty();
+            Optional<ClientParty> clientOpt = this.clientPartyRepository.findByIp(ip);
+
+            if (clientOpt.isPresent()){
+                response = Optional.of(MapperUtils.map(clientOpt.get(),ClientPartyDTO.class));
+            }
+            return response;
+        }catch (Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.GET_CLIENT_PARTY_BY_IP_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.GET_CLIENT_PARTY_BY_IP_ERROR);
+        }
+
+
     }
 
     @Override
@@ -263,7 +276,7 @@ public class PartiesService implements IPartiesService {
 
         try {
             this.clientPartyRepository.saveAll(clients);
-            stringOpt = this.clientPartyRepository.findClientNameById(newLeaderId);
+            stringOpt = this.clientPartyRepository.findClientNameById(newLeader.getId());
         }catch(Exception e){
             throw new ObjectNotFoundException(ExceptionConstant.SAVE_ALL_CLIENTS_ERROR_CODE,
                     this.getClass(), ExceptionConstant.SAVE_ALL_CLIENTS_ERROR);
@@ -346,5 +359,23 @@ public class PartiesService implements IPartiesService {
         }
         return ResponseEntity.ok(response);
 
+    }
+
+    @Override
+    public Optional<ClientPartyDTO> findLeaderFromParty(Long partyId) {
+
+        try {
+            Optional<ClientParty> leaderOpt = this.clientPartyRepository.findByPartyAndLeaderIsTrue(partyId);
+            Optional<ClientPartyDTO> response = Optional.empty();
+
+            if (leaderOpt.isPresent()) {
+                response = Optional.of(MapperUtils.map(leaderOpt.get(), ClientPartyDTO.class));
+            }
+            return response;
+
+        }catch(Exception e){
+            throw new ObjectNotFoundException(ExceptionConstant.GET_LEADER_FROM_PARTY_ERROR_CODE,
+                    this.getClass(), ExceptionConstant.GET_LEADER_FROM_PARTY_ERROR);
+        }
     }
 }

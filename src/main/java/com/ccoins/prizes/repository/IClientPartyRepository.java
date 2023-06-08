@@ -26,8 +26,7 @@ public interface IClientPartyRepository extends JpaRepository<ClientParty, Long>
 
     @Query(value = "SELECT c.NICK_NAME FROM clients_parties cp " +
             "inner join clients c on c.id = cp.FK_CLIENT " +
-            "where c.id = :id " +
-            " and cp.ACTIVE is true", nativeQuery = true)
+            "where cp.id = :id", nativeQuery = true)
     Optional<String> findClientNameById(@Param("id") Long newLeaderId);
 
 
@@ -45,4 +44,6 @@ public interface IClientPartyRepository extends JpaRepository<ClientParty, Long>
             "where c.ip = :clientIp " +
             " and cp.ACTIVE is true", nativeQuery = true)
     Optional<ClientParty> findByIp(@Param("clientIp") String leaderId);
+
+    Optional<ClientParty> findByPartyAndLeaderIsTrue(Long partyId);
 }
