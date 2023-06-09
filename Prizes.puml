@@ -1,0 +1,30 @@
+@startuml
+class PrizesController {
+}
+class PartiesService {
+}
+class PartiesController {
+}
+interface IWinnerRepository {
+}
+interface IPartiesService {
+}
+interface IPrizeService {
+}
+interface IPartyRepository {
+}
+class PrizeService {
+}
+interface IPrizeRepository {
+}
+interface IClientPartyRepository {
+}
+
+
+IPartiesService <|.. PartiesService
+JpaRepository <|-- IWinnerRepository
+JpaRepository <|-- IPartyRepository
+IPrizeService <|.. PrizeService
+JpaRepository <|-- IPrizeRepository
+JpaRepository <|-- IClientPartyRepository
+@enduml
