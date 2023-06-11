@@ -32,4 +32,7 @@ public class ClientParty {
     @Column(name = "LEADER")
     private boolean leader;
 
+    @Column(name = "BANNED")
+    private boolean banned;
+
 }

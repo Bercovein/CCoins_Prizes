@@ -43,7 +43,8 @@ public class PartiesService implements IPartiesService {
     public Optional<IPParty> findActivePartyByTable(Long id) {
 
         try {
-            return this.repository.findByTableAndActive(id, true);
+            Optional<IPParty> response = this.repository.findByTableAndActive(id, true);
+            return response;
         }catch(Exception e){
             throw new BadRequestException(ExceptionConstant.PARTY_FIND_ACTIVE_ERROR_CODE,
                     this.getClass(), ExceptionConstant.PARTY_FIND_ACTIVE_ERROR);
@@ -328,11 +329,13 @@ public class PartiesService implements IPartiesService {
     public ResponseEntity<Boolean> isBannedFromParty(ClientTableDTO request) {
 
         try {
-            Boolean response = this.clientPartyRepository.isBannedFromParty(request.getClientIp(), request.getTableCode());
+            boolean response = false;
+            List<ClientParty>  list = this.clientPartyRepository.getBannedClientFromActualPartyByClientIpAndTableCode(request.getClientIp(), request.getTableCode());
 
-            if(response ==  null){
-                response = false;
+            if(!list.isEmpty()){
+                response = true;
             }
+
             return ResponseEntity.ok(response);
         }catch(Exception e){
             throw new ObjectNotFoundException(ExceptionConstant.IS_BANNED_CLIENT_ERROR_CODE,

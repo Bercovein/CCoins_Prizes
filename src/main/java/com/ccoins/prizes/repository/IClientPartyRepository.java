@@ -30,14 +30,14 @@ public interface IClientPartyRepository extends JpaRepository<ClientParty, Long>
     Optional<String> findClientNameById(@Param("id") Long newLeaderId);
 
 
-    @Query(value = "select if(cp.banned, 'true', 'false') from clients_parties cp " +
-            "inner join clients c on c.id = cp.FK_CLIENT " +
-            "inner join parties p on p.id = cp.FK_PARTY " +
-            "inner join bar_tables bt on bt.id = p.FK_TABLE " +
-            "where c.ip = :clientIp " +
-            "and bt.CODE = :tableCode " +
-            " and cp.ACTIVE is true",nativeQuery = true)
-    Boolean isBannedFromParty(@Param("clientIp") String clientIp, @Param("tableCode") String tableCode);
+    @Query(value = "select * from clients_parties cp  " +
+            "      inner join clients c on c.id = cp.FK_CLIENT  " +
+            " where cp.FK_PARTY = (select max(p.id) from parties p " +
+            " inner join bar_tables bt on bt.id = p.FK_TABLE " +
+            "     where bt.CODE = :tableCode) " +
+            " and c.ip = :clientIp" +
+            " and cp.banned is true",nativeQuery = true)
+    List<ClientParty> getBannedClientFromActualPartyByClientIpAndTableCode(@Param("clientIp") String clientIp, @Param("tableCode") String tableCode);
 
     @Query(value = "select cp.* from clients_parties cp " +
             "inner join clients c on c.id = cp.FK_CLIENT " +
